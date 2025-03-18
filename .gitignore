@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+
+# npm logs
+npm-debug.log
+yarn-error.log
+
+# Dossiers de build
+dist/
+build/
+
+# Fichiers de configuration IDE
+.vscode/
+.idea/
+
+# Fichiers de système
+.DS_Store
+Thumbs.db
+
+# Fichiers temporaires
+*.swp
+*.swo
+
+# Fichiers de compilation TypeScript (si tu utilises TypeScript dans le futur)
+*.tsbuildinfo
