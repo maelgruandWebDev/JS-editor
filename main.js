@@ -1,73 +1,46 @@
-require.config({
-  paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs' }
-});
-
-require(['vs/editor/editor.main'], function () {
-  const editor = monaco.editor.create(document.getElementById('container'), {
-      language: 'javascript',
-      theme: 'vs-dark'
+document.addEventListener('DOMContentLoaded', function() {
+  // Charger Monaco Editor
+  require.config({
+    paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs' }
   });
 
-  // Charger le script sauvegardé si disponible
-  if (localStorage.getItem('savedScript')) {
-      editor.setValue(localStorage.getItem('savedScript'));
-  }
+  require(['vs/editor/editor.main'], function () {
+    const editor = monaco.editor.create(document.getElementById('container'), {
+      language: 'javascript'
+    });
 
-  function captureConsoleOutput() {
+    // Créer une fonction pour rediriger console.log vers la section output
+    function captureConsoleOutput() {
       const originalLog = console.log;
       const originalError = console.error;
 
       console.log = function (...args) {
-          document.getElementById('output').textContent += args.join(' ') + '\n';
-          originalLog.apply(console, args);
+        document.getElementById('output').textContent += args.join(' ') + '\n';
+        originalLog.apply(console, args);
       };
 
       console.error = function (...args) {
-          document.getElementById('output').textContent += 'Erreur: ' + args.join(' ') + '\n';
-          originalError.apply(console, args);
+        document.getElementById('output').textContent += 'Erreur: ' + args.join(' ') + '\n';
+        originalError.apply(console, args);
       };
-  }
+    }
 
-  document.getElementById('runButton').addEventListener('click', () => {
-      const code = editor.getValue();
-      document.getElementById('output').textContent = '';
+    // Ajouter l'événement pour le bouton "Exécuter le code"
+    const runButton = document.getElementById('runButton');
+    if (runButton) {
+      runButton.addEventListener('click', () => {
+        const code = editor.getValue();
+        
+        // Vider la section output avant d'exécuter le code
+        document.getElementById('output').textContent = '';
 
-      try {
+        try {
           captureConsoleOutput();
           eval(code);
-      } catch (error) {
+        } catch (error) {
           document.getElementById('output').textContent = 'Erreur : ' + error.message;
-      }
-  });
-
-  // Sauvegarde dans localStorage
-  document.getElementById('saveButton').addEventListener('click', () => {
-      const script = editor.getValue();
-      localStorage.setItem('savedScript', script);
-
-      // Sauvegarde en fichier
-      const blob = new Blob([script], { type: "text/javascript" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "script.js";
-      a.click();
-  });
-
-  // Charger un fichier depuis le PC
-  document.getElementById('loadFileInput').addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function (e) {
-          editor.setValue(e.target.result);
-      };
-      reader.readAsText(file);
-  });
-
-  // Effacer la sauvegarde locale
-  document.getElementById('clearButton').addEventListener('click', () => {
-      localStorage.removeItem('savedScript');
-      editor.setValue('');
+        }
+      });
+    }
   });
 });
