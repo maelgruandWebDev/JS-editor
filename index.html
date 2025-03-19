@@ -11,16 +11,23 @@
   <div class="header">
     JS Editor
   </div>
+
   <br><br><br>
+
   <div id="container"></div>
-  
-  <button id="runButton">Exécuter le code</button>
-  
+
+  <div class="buttons">
+    <button id="runButton">Exécuter le code</button>
+    <button id="clearButton">Effacer la sauvegarde</button>
+    <button id="saveButton">Sauvegarder sur l'ordinateur</button>
+    <input type="file" id="loadFileInput" accept=".js">
+  </div>
+
   <div class="output-section">
     <h3>Résultat :</h3>
     <pre id="output"></pre>
   </div>
-  
+
   <div class="footer">
     &copy; 2025 Maël Gruand
   </div>
