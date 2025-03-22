@@ -10,7 +10,7 @@
   <link rel="manifest" href="manifest.json">
 
   <!-- Ajouter une icône pour le favicon -->
-  <link rel="icon" href="icons/th.ico" type="image/x-icon">
+  <link rel="icon" href="icons/th.jpeg" type="image/jpeg">
 
   <!-- Meta tags pour améliorer l'expérience sur mobile -->
   <meta name="description" content="Un éditeur JavaScript dans votre navigateur">
@@ -42,5 +42,14 @@
 
   <!-- Script principal de l'application -->
   <script src="main.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js")
+          .then(() => console.log("Service Worker enregistré !"))
+          .catch((err) => console.log("Échec de l'enregistrement du Service Worker :", err));
+      });
+    }
+  </script>
 </body>
 </html>
